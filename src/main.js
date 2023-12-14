@@ -19,6 +19,9 @@ const parseRepoPath = (path) => {
   }
 }
 
+const makeRepoPath = (owner, repo, branch, path) =>
+  `${owner}/${repo}/${branch}/${path}`
+
 const uploadFile = async (localFile, repoPath, commitMessage) => {
   console.debug(
     `upload local file ${localFile} to ${repoPath} with message "${commitMessage}"`
@@ -75,11 +78,27 @@ const uploadFile = async (localFile, repoPath, commitMessage) => {
 }
 
 const downloadFile = async (localFile, repoPath) => {
+  const { owner, repo, branch, path } = parseRepoPath(repoPath)
+
+  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
+  // Get the latest commit on the branch
+  const latestCommit = await octokit.repos.getBranch({
+    owner,
+    repo,
+    branch
+  })
+  const resolvedRepoPath = makeRepoPath(
+    owner,
+    repo,
+    latestCommit.data.commit.sha,
+    path
+  )
+
   const response = await axios.get(
-    `https://raw.githubusercontent.com/${repoPath}`
+    `https://raw.githubusercontent.com/${resolvedRepoPath}`
   )
 
   fs.writeFileSync(localFile, response.data)
 }
 
-module.exports = { uploadFile, downloadFile, parseRepoPath }
+module.exports = { uploadFile, downloadFile, parseRepoPath, makeRepoPath }
