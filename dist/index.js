@@ -10371,7 +10371,8 @@ const downloadFile = async (localFile, repoPath) => {
   )
 
   const response = await axios.get(
-    `https://raw.githubusercontent.com/${resolvedRepoPath}`
+    `https://raw.githubusercontent.com/${resolvedRepoPath}`,
+    { responseType: 'arraybuffer' }
   )
 
   fs.writeFileSync(localFile, response.data)
