@@ -15,4 +15,4 @@ inputs:
 
 runs:
   using: node20
-  main: src/download-action.js
+  main: ../src/upload-action.js
