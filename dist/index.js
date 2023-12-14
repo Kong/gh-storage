@@ -10296,6 +10296,9 @@ const parseRepoPath = (path) => {
 }
 
 const uploadFile = async (localFile, repoPath, commitMessage) => {
+  console.debug(
+    `upload local file ${localFile} to ${repoPath} with message "${commitMessage}"`
+  )
   const fileContent = fs.readFileSync(localFile, 'utf-8')
   const { owner, repo, branch, path } = parseRepoPath(repoPath)
 
