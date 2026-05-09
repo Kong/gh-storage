@@ -17,11 +17,11 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6.4.0
         with:
           node-version-file: .node-version
           cache: npm
@@ -49,14 +49,13 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
-      - name: Test Local Action
-        id: test-action
-        uses: ./
+      - name: Test Download Action
+        id: test-download-action
+        uses: ./download
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          milliseconds: 1000
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+          repo-path: ${{ github.repository }}/main/README.md
+          local-path: downloaded-readme.md

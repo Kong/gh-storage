@@ -4,7 +4,8 @@ author: 'Hans Hübner, Kong Inc.'
 
 inputs:
   repo-path:
-    description: 'Repository path in the form <owner>/<repo>/<branch>/<path>'
+    description: >
+      Repository path in the form <owner>/<repo>/<branch>/<path>
     required: true
   local-path:
     description: 'Local name of the file, defaults to the path in the repository'
@@ -14,5 +15,5 @@ inputs:
     required: false
 
 runs:
-  using: node20
+  using: node24
   main: ../src/upload-action.js
