@@ -1,4 +1,5 @@
 const fs = require('node:fs')
+const { randomBytes } = require('node:crypto')
 const { expect, it, describe } = require('@jest/globals')
 const tmp = require('tmp')
 
@@ -31,7 +32,7 @@ if (repoPath) {
   describe('storage', () => {
     it('can upload and download a file', async () => {
       const tempFile = tmp.fileSync()
-      const theSecretMessage = Math.random().toString(36)
+      const theSecretMessage = randomBytes(16).toString('hex')
       fs.writeFileSync(tempFile.name, theSecretMessage)
       await uploadFile(tempFile.name, repoPath, 'committed from test')
       fs.unlinkSync(tempFile.name)
